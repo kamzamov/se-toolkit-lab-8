@@ -1,14 +1,10 @@
-"""Find empty sections and TODO-only sections in markdown files.
-
-Writes a report to instructors/file-reviews/incomplete-sections.md.
-"""
+"""Find empty sections and TODO-only sections in markdown files."""
 
 import argparse
+import os
 import re
 from datetime import date
 from pathlib import Path
-
-REPORT_PATH = Path("instructors/file-reviews/incomplete-sections.md")
 
 
 def heading_anchor(text: str) -> str:
@@ -56,10 +52,12 @@ def scan_file(filepath: Path) -> list[tuple[int, str, str, str]]:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("paths", nargs="*", help="Directories to scan (default: lab/tasks/ wiki/)")
+    parser.add_argument("path", nargs="?", default=None, help="Directory to scan (default: lab/tasks/ and wiki/)")
+    parser.add_argument("--output", required=True, help="Path to write the report to")
     args = parser.parse_args()
 
-    search_paths = [Path(p) for p in args.paths] if args.paths else [Path("lab/tasks"), Path("wiki")]
+    report_path = Path(args.output)
+    search_paths = [Path(args.path)] if args.path else [Path("lab/tasks"), Path("wiki")]
 
     md_files: list[Path] = []
     for sp in search_paths:
@@ -92,11 +90,12 @@ def main() -> None:
         out.append("No incomplete sections found.")
     else:
         for filepath_str in sorted(file_results.keys()):
-            out.append(f"### {filepath_str}")
+            out.append(f"### `{filepath_str}`")
             out.append("")
             for lnum, heading, kind, comment in file_results[filepath_str]:
                 anchor = heading_anchor(heading)
-                link_target = f"../../{filepath_str}#{anchor}"
+                rel = os.path.relpath(filepath_str, report_path.parent)
+                link_target = f"{rel}#{anchor}"
                 label = f"{filepath_str}:{lnum}"
                 if kind == "empty":
                     out.append(f"- [{label}]({link_target}) — {heading} (empty)")
@@ -119,9 +118,9 @@ def main() -> None:
         for fp, fres in by_count[:5]:
             out.append(f"- `{fp}`: {len(fres)} section(s)")
 
-    REPORT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    REPORT_PATH.write_text("\n".join(out) + "\n", encoding="utf-8")
-    print(f"Report written to {REPORT_PATH}")
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+    report_path.write_text("\n".join(out) + "\n", encoding="utf-8")
+    print(f"Report written to {report_path}")
 
 
 if __name__ == "__main__":
