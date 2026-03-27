@@ -294,12 +294,12 @@ Both are in a single repository. The webchat plugin handles:
 
     Common symptom table:
 
-    | Symptom | Likely cause | First thing to check |
-    |---------|--------------|----------------------|
-    | Login appears to work, then chat disconnects | stale browser state or bad access key handling | clear site data and log in again with the current `NANOBOT_ACCESS_KEY` |
-    | Login works, but replies take a long time | model/API latency | check `qwen-code-api` and `nanobot` logs before assuming the UI is broken |
-    | `/flutter` loads old behavior after rebuild | stale frontend assets | hard refresh the browser page |
-    | Login works but no agent reply ever arrives | broken `/ws/chat` proxy or backend/channel issue | check Caddy `/ws/chat`, `nanobot` logs, and a direct WebSocket request |
+    | Symptom                                      | Likely cause                                     | First thing to check                                                      |
+    | -------------------------------------------- | ------------------------------------------------ | ------------------------------------------------------------------------- |
+    | Login appears to work, then chat disconnects | stale browser state or bad access key handling   | clear site data and log in again with the current `NANOBOT_ACCESS_KEY`    |
+    | Login works, but replies take a long time    | model/API latency                                | check `qwen-code-api` and `nanobot` logs before assuming the UI is broken |
+    | `/flutter` loads old behavior after rebuild  | stale frontend assets                            | hard refresh the browser page                                             |
+    | Login works but no agent reply ever arrives  | broken `/ws/chat` proxy or backend/channel issue | check Caddy `/ws/chat`, `nanobot` logs, and a direct WebSocket request    |
 
 <!-- STOP -->
 > [!CAUTION]
