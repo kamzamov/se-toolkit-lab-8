@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "jobs": [
+    {
+      "id": "9aa432d4",
+      "name": "HEALTH CHECK: Check for LMS/ba",
+      "enabled": true,
+      "schedule": {
+        "kind": "every",
+        "atMs": null,
+        "everyMs": 120000,
+        "expr": null,
+        "tz": null
+      },
+      "payload": {
+        "kind": "agent_turn",
+        "message": "HEALTH CHECK: Check for LMS/backend errors in the last 2 minutes using logs_error_count (service=\"Learning Management Service\", minutes=2). If errors found, use logs_search to get details and traces_get if trace_id available. Post a concise summary to webchat chat a5055785-685e-478e-a347-1e47ee31f328 using the message tool. If no errors, report system looks healthy.",
+        "deliver": true,
+        "channel": "webchat",
+        "to": "a5055785-685e-478e-a347-1e47ee31f328"
+      },
+      "state": {
+        "nextRunAtMs": 1774696862204,
+        "lastRunAtMs": 1774696729330,
+        "lastStatus": "ok",
+        "lastError": null,
+        "runHistory": [
+          {
+            "runAtMs": 1774696729330,
+            "status": "ok",
+            "durationMs": 12874,
+            "error": null
+          }
+        ]
+      },
+      "createdAtMs": 1774696609328,
+      "updatedAtMs": 1774696742204,
+      "deleteAfterRun": false
+    }
+  ]
+}
