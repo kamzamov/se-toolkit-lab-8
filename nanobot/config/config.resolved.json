@@ -1,0 +1,71 @@
+{
+  "agents": {
+    "defaults": {
+      "workspace": "./workspace",
+      "model": "coder-model",
+      "provider": "custom",
+      "maxTokens": 8192,
+      "contextWindowTokens": 65536,
+      "temperature": 0.1,
+      "maxToolIterations": 40
+    }
+  },
+  "providers": {
+    "custom": {
+      "apiKey": "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",
+      "apiBase": "http://qwen-code-api:8080/v1"
+    }
+  },
+  "tools": {
+    "mcpServers": {
+      "lms": {
+        "command": "python",
+        "args": [
+          "-m",
+          "mcp_lms"
+        ],
+        "env": {
+          "NANOBOT_LMS_BACKEND_URL": "http://backend:8000",
+          "NANOBOT_LMS_API_KEY": "lms-api-key"
+        }
+      },
+      "webchat": {
+        "command": "python",
+        "args": [
+          "-m",
+          "mcp_webchat"
+        ],
+        "env": {
+          "NANOBOT_WEBSOCKET_RELAY_URL": "ws://localhost:8765",
+          "NANOBOT_ACCESS_KEY": "nano-access-key-123"
+        }
+      },
+      "observability": {
+        "command": "python",
+        "args": [
+          "-m",
+          "mcp_obs"
+        ],
+        "env": {
+          "NANOBOT_VICTORIALOGS_URL": "http://victorialogs:9428",
+          "NANOBOT_VICTORIATRACES_URL": "http://victoriatraces:10428"
+        }
+      }
+    }
+  },
+  "channels": {
+    "sendProgress": true,
+    "webchat": {
+      "enabled": true,
+      "allowFrom": [
+        "*"
+      ],
+      "host": "0.0.0.0",
+      "port": 8765
+    }
+  },
+  "gateway": {
+    "host": "0.0.0.0",
+    "port": 18790
+  }
+}
