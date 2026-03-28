@@ -20,13 +20,14 @@ async def get_items(session: AsyncSession = Depends(get_session)):
     try:
         return await read_items(session)
     except Exception as exc:
-        logger.warning(
-            "items_list_failed_as_not_found",
-            extra={"event": "items_list_failed_as_not_found"},
+        logger.error(
+            "items_list_failed",
+            extra={"event": "items_list_failed", "error": str(exc)},
         )
+        # Re-raise as 500 Internal Server Error for database/connection issues
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Items not found",
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to retrieve items: {type(exc).__name__}",
         ) from exc
 
 
